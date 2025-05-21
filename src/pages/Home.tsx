@@ -12,13 +12,66 @@ const Home = () => {
     if (userData) {
       navigate("/dashboard");
     }
+    
+    // Create floating shapes for the background
+    const createShapes = () => {
+      const floatingShapes = document.querySelector(".floating-shapes");
+      if (!floatingShapes) return;
+      
+      for (let i = 0; i < 15; i++) {
+        const shape = document.createElement("div");
+        shape.classList.add("shape");
+        
+        // Random size between 20px and 80px
+        const size = Math.random() * 60 + 20;
+        shape.style.width = `${size}px`;
+        shape.style.height = `${size}px`;
+        
+        // Random position
+        shape.style.left = `${Math.random() * 100}%`;
+        shape.style.top = `${Math.random() * 100}%`;
+        
+        // Random opacity
+        shape.style.opacity = `${Math.random() * 0.5 + 0.1}`;
+        
+        // Random animation duration
+        shape.style.animationDuration = `${Math.random() * 20 + 10}s`;
+        
+        // Random animation delay
+        shape.style.animationDelay = `${Math.random() * 5}s`;
+        
+        // Random background
+        const hue = Math.random() * 60 + 180; // Blues and cyans
+        shape.style.background = `hsla(${hue}, 70%, 70%, 0.2)`;
+        
+        // Add shape to container
+        floatingShapes.appendChild(shape);
+      }
+    };
+    
+    // Call the function when component mounts
+    setTimeout(createShapes, 100);
+    
+    // Clean up the shapes when unmounting
+    return () => {
+      const floatingShapes = document.querySelector(".floating-shapes");
+      if (floatingShapes) {
+        floatingShapes.innerHTML = "";
+      }
+    };
   }, [navigate]);
   
   return (
-    <div className="min-h-screen healthcare-gradient flex flex-col items-center justify-center p-4">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">MediCare</h1>
-        <p className="text-xl text-gray-700">Your Trusted Healthcare Platform</p>
+    <div className="min-h-screen creative-healthcare-bg flex flex-col items-center justify-center p-4 relative">
+      <div className="floating-shapes"></div>
+      
+      <div className="text-center mb-8 relative z-10">
+        <h1 className="text-5xl font-bold text-gray-800 mb-3 tracking-tight">
+          MediCare
+        </h1>
+        <p className="text-xl text-gray-700">
+          Your Trusted Healthcare Platform
+        </p>
       </div>
       
       <div className="auth-card">
