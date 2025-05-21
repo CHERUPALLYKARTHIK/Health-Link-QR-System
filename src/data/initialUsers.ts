@@ -6,6 +6,9 @@ interface User {
   email: string;
   specialty?: string;
   photo?: string;
+  gender?: string;
+  patient_id?: string;
+  card_number?: string;
 }
 
 export const initialUsers: User[] = [

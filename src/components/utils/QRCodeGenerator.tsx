@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import QRCode from "qrcode";
 
@@ -14,7 +13,7 @@ const QRCodeGenerator = ({
   value,
   size = 200,
   bgColor = "#FFFFFF",
-  fgColor = "#0EA5E9",
+  fgColor = "#000000",
   showText = true
 }: QRCodeGeneratorProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,11 +25,13 @@ const QRCodeGenerator = ({
         value,
         {
           width: size,
-          margin: 1,
+          margin: 2,
+          errorCorrectionLevel: 'H',
           color: {
             dark: fgColor,
             light: bgColor
-          }
+          },
+          quality: 1
         },
         (error) => {
           if (error) {

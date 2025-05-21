@@ -16,6 +16,7 @@ const RegistrationForm = () => {
     password: "",
     role: "",
     specialty: "",
+    gender: "",
     profileImage: null as File | null,
     imagePreview: "",
   });
@@ -23,6 +24,13 @@ const RegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Function to generate a patient ID
+  const generatePatientId = () => {
+    const timestamp = Date.now().toString().slice(-6); // Last 6 digits of timestamp
+    const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0'); // 3 digit random number
+    return `P${timestamp}${randomNum}`;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,6 +53,13 @@ const RegistrationForm = () => {
     setFormData({
       ...formData,
       specialty: value,
+    });
+  };
+
+  const handleGenderChange = (value: string) => {
+    setFormData({
+      ...formData,
+      gender: value,
     });
   };
 
@@ -71,7 +86,7 @@ const RegistrationForm = () => {
     e.preventDefault();
     
     // Validation
-    if (!formData.firstName || !formData.lastName || !formData.username || !formData.email || !formData.password || !formData.role) {
+    if (!formData.firstName || !formData.lastName || !formData.username || !formData.email || !formData.password || !formData.role || !formData.gender) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -91,22 +106,30 @@ const RegistrationForm = () => {
     
     setIsLoading(true);
     
+    // Generate patient ID for patients
+    const patientId = formData.role === "patient" ? generatePatientId() : undefined;
+    
     // Store user data in localStorage
     const userData = {
-      username: formData.username,
+      username: formData.role === "patient" ? patientId : formData.username,
+      patient_id: patientId, // Will be undefined for non-patients
+      card_number: patientId, // Will be undefined for non-patients
       name: `${formData.firstName} ${formData.lastName}`,
       role: formData.role,
       email: formData.email,
       specialty: formData.specialty,
+      gender: formData.gender,
       photo: formData.imagePreview || null
     };
 
-    // Check if username already exists
+    // Check if username/patient_id already exists
     const existingUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
-    if (existingUsers.some((user: any) => user.username === formData.username)) {
+    if (existingUsers.some((user: any) => user.username === userData.username)) {
       toast({
         title: "Error",
-        description: "Username already exists. Please choose a different username.",
+        description: formData.role === "patient" 
+          ? "Failed to generate unique patient ID. Please try again." 
+          : "Username already exists. Please choose a different username.",
         variant: "destructive",
       });
       setIsLoading(false);
@@ -117,12 +140,20 @@ const RegistrationForm = () => {
     existingUsers.push(userData);
     localStorage.setItem("registeredUsers", JSON.stringify(existingUsers));
     
-    // Simulate API call
+    // Show success message with patient ID for patients
     setTimeout(() => {
-      toast({
-        title: "Registration successful",
-        description: "You can now log in with your credentials",
-      });
+      if (formData.role === "patient") {
+        toast({
+          title: "Registration successful",
+          description: `Your Patient ID and Card Number is: ${patientId}. Please save this number for future reference.`,
+          duration: 6000, // Show for 6 seconds
+        });
+      } else {
+        toast({
+          title: "Registration successful",
+          description: "You can now log in with your credentials",
+        });
+      }
       setIsLoading(false);
       navigate("/login");
     }, 1500);
@@ -158,18 +189,20 @@ const RegistrationForm = () => {
         </div>
       </div>
       
-      <div className="space-y-2">
-        <Label htmlFor="username">Username *</Label>
-        <Input
-          id="username"
-          name="username"
-          type="text"
-          value={formData.username}
-          onChange={handleChange}
-          required
-          className="h-10"
-        />
-      </div>
+      {formData.role !== "patient" && (
+        <div className="space-y-2">
+          <Label htmlFor="username">Username *</Label>
+          <Input
+            id="username"
+            name="username"
+            type="text"
+            value={formData.username}
+            onChange={handleChange}
+            required
+            className="h-10"
+          />
+        </div>
+      )}
       
       <div className="space-y-2">
         <Label htmlFor="email">Email *</Label>
@@ -182,6 +215,21 @@ const RegistrationForm = () => {
           required
           className="h-10"
         />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="gender">Gender *</Label>
+        <Select value={formData.gender} onValueChange={handleGenderChange}>
+          <SelectTrigger className="h-10">
+            <SelectValue placeholder="Select your gender" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="male">Male</SelectItem>
+            <SelectItem value="female">Female</SelectItem>
+            <SelectItem value="other">Other</SelectItem>
+            <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       
       <div className="space-y-2">
