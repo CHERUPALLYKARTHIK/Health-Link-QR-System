@@ -20,12 +20,18 @@ const mockMedicalReport = {
 
 const PatientDashboard = () => {
   const [user, setUser] = useState<any>(null);
+  const [qrValue, setQrValue] = useState("");
   
   useEffect(() => {
     const userData = localStorage.getItem("healthcareUser");
     
     if (userData) {
-      setUser(JSON.parse(userData));
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      
+      // Create a full URL for the QR code that includes the domain
+      const currentDomain = window.location.origin;
+      setQrValue(`${currentDomain}/patient/${parsedUser.username}`);
     }
   }, []);
 
@@ -59,7 +65,7 @@ const PatientDashboard = () => {
                 </div>
                 <div className="bg-white p-3 rounded-lg">
                   <QRCodeGenerator 
-                    value={`https://healthcare.example/patient/${user.username}`} 
+                    value={qrValue} 
                     size={150}
                   />
                 </div>

@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import PatientProfile from "./pages/PatientProfile";
 import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/patient/:username" element={<PatientProfile />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

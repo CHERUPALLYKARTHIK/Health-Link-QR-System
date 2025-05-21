@@ -7,13 +7,15 @@ type QRCodeGeneratorProps = {
   size?: number;
   bgColor?: string;
   fgColor?: string;
+  showText?: boolean;
 };
 
 const QRCodeGenerator = ({
   value,
   size = 200,
   bgColor = "#FFFFFF",
-  fgColor = "#0EA5E9"
+  fgColor = "#0EA5E9",
+  showText = true
 }: QRCodeGeneratorProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -40,8 +42,13 @@ const QRCodeGenerator = ({
   }, [value, size, bgColor, fgColor]);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center">
       <canvas ref={canvasRef} />
+      {showText && value && (
+        <p className="text-xs text-gray-500 mt-2 text-center">
+          Scan to view patient profile
+        </p>
+      )}
     </div>
   );
 };
