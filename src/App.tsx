@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import QRScanResult from "./pages/QRScanResult";
 import { Toaster } from "./components/ui/toaster";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard/*" element={<DashboardLayout />} />
         <Route path="/patient/:username" element={<QRScanResult />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
     </Router>
