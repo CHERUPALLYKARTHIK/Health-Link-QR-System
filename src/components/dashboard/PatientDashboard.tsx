@@ -42,32 +42,37 @@ const PatientDashboard = () => {
       <div className="flex flex-col md:flex-row gap-6">
         {/* Virtual Health Card */}
         <div className="md:w-1/3">
-          <Card id="virtual-card" className="medical-card animate-fade-in">
+          <Card id="virtual-card" className="medical-card animate-fade-in" style={{ aspectRatio: "1.6/1" }}>
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium">Virtual Health Card</CardTitle>
+              <CardTitle className="text-lg font-medium">HEALTHCARE SYSTEM</CardTitle>
               <CardDescription className="text-white/80">
-                Your digital healthcare ID
+                Virtual Health ID Card
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-center space-y-4">
-                <Avatar className="h-24 w-24 border-4 border-white">
-                  <AvatarImage src="https://randomuser.me/api/portraits/women/44.jpg" />
-                  <AvatarFallback className="bg-white text-healthcare-primary">
-                    <User size={36} />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="text-center">
-                  <h3 className="text-xl font-bold">
+              <div className="flex justify-between items-center">
+                <div className="flex flex-col space-y-2">
+                  <h3 className="text-lg font-bold">
                     {user.name}
                   </h3>
-                  <p className="text-white/80">Patient ID: P-2023-4567</p>
+                  <p className="text-white/90 text-sm">ID: P-2023-4567</p>
+                  <p className="text-white/90 text-sm">DOB: 01/01/1990</p>
+                  <p className="text-white/90 text-sm">Blood: O+</p>
                 </div>
-                <div className="bg-white p-3 rounded-lg">
-                  <QRCodeGenerator 
-                    value={qrValue} 
-                    size={150}
-                  />
+                <div className="flex flex-col items-center space-y-2">
+                  <Avatar className="h-20 w-20 border-2 border-white">
+                    <AvatarImage src="https://randomuser.me/api/portraits/women/44.jpg" />
+                    <AvatarFallback className="bg-white text-healthcare-primary">
+                      <User size={32} />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="bg-white p-2 rounded-md">
+                    <QRCodeGenerator 
+                      value={qrValue} 
+                      size={80}
+                      showText={false}
+                    />
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -77,6 +82,7 @@ const PatientDashboard = () => {
               contentId="virtual-card"
               filename="health-card"
               label="Download Health Card"
+              isCard={true}
             />
           </div>
         </div>
