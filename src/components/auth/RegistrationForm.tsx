@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -91,6 +90,32 @@ const RegistrationForm = () => {
     }
     
     setIsLoading(true);
+    
+    // Store user data in localStorage
+    const userData = {
+      username: formData.username,
+      name: `${formData.firstName} ${formData.lastName}`,
+      role: formData.role,
+      email: formData.email,
+      specialty: formData.specialty,
+      photo: formData.imagePreview || null
+    };
+
+    // Check if username already exists
+    const existingUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+    if (existingUsers.some((user: any) => user.username === formData.username)) {
+      toast({
+        title: "Error",
+        description: "Username already exists. Please choose a different username.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // Store in registered users list
+    existingUsers.push(userData);
+    localStorage.setItem("registeredUsers", JSON.stringify(existingUsers));
     
     // Simulate API call
     setTimeout(() => {

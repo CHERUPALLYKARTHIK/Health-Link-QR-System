@@ -1,21 +1,16 @@
-
 import { useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 
-type PDFGeneratorProps = {
+interface PDFGeneratorProps {
   contentId: string;
   filename: string;
-  label?: string;
-};
+  label?: string | React.ReactNode;
+}
 
-const PDFGenerator = ({
-  contentId,
-  filename,
-  label = "Download PDF"
-}: PDFGeneratorProps) => {
+const PDFGenerator = ({ contentId, filename, label = "Download PDF" }: PDFGeneratorProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const generatePDF = async () => {
@@ -55,15 +50,23 @@ const PDFGenerator = ({
     }
   };
 
+  if (typeof label === "string") {
+    return (
+      <Button 
+        ref={buttonRef}
+        onClick={generatePDF} 
+        className="bg-healthcare-primary hover:bg-healthcare-secondary text-white"
+      >
+        <Download className="mr-2 h-4 w-4" />
+        {label}
+      </Button>
+    );
+  }
+
   return (
-    <Button 
-      ref={buttonRef}
-      onClick={generatePDF} 
-      className="bg-healthcare-primary hover:bg-healthcare-secondary text-white"
-    >
-      <Download className="mr-2 h-4 w-4" />
+    <div onClick={generatePDF} className="cursor-pointer">
       {label}
-    </Button>
+    </div>
   );
 };
 

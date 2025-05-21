@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RegistrationForm from "@/components/auth/RegistrationForm";
@@ -17,7 +16,7 @@ const Register = () => {
   return (
     <div className="min-h-screen healthcare-gradient flex flex-col items-center justify-center p-4">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">MediCare</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Health QR Link</h1>
         <p className="text-xl text-gray-700">Your Trusted Healthcare Platform</p>
       </div>
       
