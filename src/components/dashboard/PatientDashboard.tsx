@@ -42,15 +42,20 @@ const mockMedicalReports = [
 
 const PatientDashboard = () => {
   const [user, setUser] = useState<any>(null);
+<<<<<<< HEAD
   const [qrUrl, setQrUrl] = useState<string>("");
   const [showCardBack, setShowCardBack] = useState(false);
   const { toast } = useToast();
+=======
+  const [qrValue, setQrValue] = useState("");
+>>>>>>> 93ba44b851f746a78a1742764c5e11505a270ec0
   
   useEffect(() => {
     const userData = localStorage.getItem("healthcareUser");
     
     if (userData) {
       const parsedUser = JSON.parse(userData);
+<<<<<<< HEAD
       // Add contact and address information for Sarah Anderson
       const enhancedUser = {
         ...parsedUser,
@@ -74,6 +79,13 @@ const PatientDashboard = () => {
         : "http://192.168.0.228:8080";
       
       setQrUrl(`${baseUrl}/patient/${enhancedUser.username}?code=${qrData}`);
+=======
+      setUser(parsedUser);
+      
+      // Create a full URL for the QR code that includes the domain
+      const currentDomain = window.location.origin;
+      setQrValue(`${currentDomain}/patient/${parsedUser.username}`);
+>>>>>>> 93ba44b851f746a78a1742764c5e11505a270ec0
     }
   }, []);
 
@@ -230,6 +242,7 @@ const PatientDashboard = () => {
   if (!user) return null;
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-gradient-to-br from-emerald-400 to-emerald-600 relative">
       {/* Background Pattern Overlay */}
       <div className="absolute inset-0 overflow-hidden">
@@ -238,6 +251,56 @@ const PatientDashboard = () => {
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill-opacity='0.1' fill='%23ffffff'/%3E%3C/svg%3E")`,
           backgroundSize: '60px 60px'
         }}></div>
+=======
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Virtual Health Card */}
+        <div className="md:w-1/3">
+          <Card id="virtual-card" className="medical-card animate-fade-in" style={{ aspectRatio: "1.6/1" }}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-medium">HEALTHCARE SYSTEM</CardTitle>
+              <CardDescription className="text-white/80">
+                Virtual Health ID Card
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-between items-center">
+                <div className="flex flex-col space-y-2">
+                  <h3 className="text-lg font-bold">
+                    {user.name}
+                  </h3>
+                  <p className="text-white/90 text-sm">ID: P-2023-4567</p>
+                  <p className="text-white/90 text-sm">DOB: 01/01/1990</p>
+                  <p className="text-white/90 text-sm">Blood: O+</p>
+                </div>
+                <div className="flex flex-col items-center space-y-2">
+                  <Avatar className="h-20 w-20 border-2 border-white">
+                    <AvatarImage src="https://randomuser.me/api/portraits/women/44.jpg" />
+                    <AvatarFallback className="bg-white text-healthcare-primary">
+                      <User size={32} />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="bg-white p-2 rounded-md">
+                    <QRCodeGenerator 
+                      value={qrValue} 
+                      size={80}
+                      showText={false}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <div className="mt-4 flex justify-center">
+            <PDFGenerator
+              contentId="virtual-card"
+              filename="health-card"
+              label="Download Health Card"
+              isCard={true}
+            />
+          </div>
+        </div>
+>>>>>>> 93ba44b851f746a78a1742764c5e11505a270ec0
         
         {/* Connected Dots Pattern */}
         <div className="absolute inset-0" style={{
